@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Clicker Leaderboard</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-image: url('https://wallpaperaccess.com/full/2044405.jpg'); /* Cool background image */
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+        #main-content {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to the main content */
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+            font-size: 12px;
+        }
+        th {
+            background-color: #ffcc00;
+            color: #000;
+        }
+        nav {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            margin: 5px;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 12px;
+        }
+        nav a:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <h1>Leaderboard</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Emojis Collected</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard">
+                <!-- Leaderboard entries will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+    <nav>
+        <a href="index.html">Clicking</a>
+        <a href="upgrades.html">Upgrades</a>
+        <a href="stats.html">Stats</a>
+        <a href="settings.html">Settings</a>
+    </nav>
+
+    <script>
+        const leaderboardData = [
+            { rank: 1, player: 'Player1', emojis: 1000000 },
+            { rank: 2, player: 'Player2', emojis: 800000 },
+            { rank: 3, player: 'Player3', emojis: 600000 },
+            { rank: 4, player: 'Player4', emojis: 400000 },
+            { rank: 5, player: 'Player5', emojis: 200000 },
+        ];
+
+        function loadLeaderboard() {
+            const leaderboard = document.getElementById('leaderboard');
+            leaderboard.innerHTML = '';
+            leaderboardData.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${entry.rank}</td><td>${entry.player}</td><td>${entry.emojis}</td>`;
+                leaderboard.appendChild(row);
+            });
+        }
+
+        // Initialize leaderboard
+        loadLeaderboard();
+    </script>
+</body>
+</html>
