@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Clicker Game</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-image: url('https://wallpaperaccess.com/full/2044405.jpg'); /* Cool background image */
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+        #main-content {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to the main content */
+            border-radius: 10px;
+        }
+        #dirt {
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none; /* Prevents text highlighting on click */
+            transition: transform 0.2s;
+        }
+        #dirt:hover {
+            transform: scale(1.1);
+        }
+        .pulse {
+            animation: pulse 0.5s;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .emoji-jump {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            animation: jump 1s forwards;
+        }
+        .plus-one {
+            position: absolute;
+            top: calc(50% - 20px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: yellow;
+            animation: jump 1s forwards;
+        }
+        @keyframes jump {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -80%) scale(1.5); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+        nav {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            margin: 5px;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 12px;
+        }
+        nav a:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <h1>Emoji Clicker Game</h1>
+        <div id="dirt">💩</div>
+        <h2 id="score">Emoji Collected: 0</h2>
+    </div>
+    <nav>
+        <a href="upgrades.html">Upgrades</a>
+        <a href="stats.html">Stats</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="settings.html">Settings</a>
+    </nav>
+
+    <audio id="clickSound" src="https://www.myinstants.com/media/sounds/fart-01.mp3" preload="auto"></audio>
+
+    <script>
+        let emoji = 0;
+        let emojiPerClick = 1;
+        let autoClickerActive = false;
+        let autoClickerInterval;
+        const emojiDisplay = document.getElementById('score');
+        const emojiButton = document.getElementById('dirt');
+        const clickSound = document.getElementById('clickSound');
+
+        const skins = [
+            '🌈💩',
+            '⚫💩',
+            '⚪💩',
+            '🏅💩',
+            '🐶',
+            '🐱',
+            '🐭',
+            '🐹',
+            '🐰'
+        ];
+        let currentSkinIndex = 0;
+
+        // Load game data from local storage
+        function loadGame() {
+            const savedData = JSON.parse(localStorage.getItem('emojiClickerGame'));
+            if (savedData) {
+                emoji = savedData.emoji;
+                emojiPerClick = savedData.emojiPerClick;
+                autoClickerActive = savedData.autoClickerActive;
+                currentSkinIndex = savedData.currentSkinIndex || 0;
+                emojiButton.innerText = skins[currentSkinIndex];
+                if (autoClickerActive) {
+                    activateAutoClicker();
+                }
+                updateDisplay();
+            }
+        }
+
+        // Save game data to local storage
+        function saveGame() {
+            const gameData = {
+                emoji: emoji,
+                emojiPerClick: emojiPerClick,
+                autoClickerActive: autoClickerActive,
+                currentSkinIndex: currentSkinIndex
+            };
+            localStorage.setItem('emojiClickerGame', JSON.stringify(gameData));
+        }
+
+        // Auto-save game data every 5 seconds
+        function autoSaveGame() {
+            setInterval(saveGame, 5000); // Autosave every 5 seconds
+        }
+
+        emojiButton.addEventListener('click', () => {
+            addEmoji(emojiPerClick);
+            clickSound.play();
+            triggerAnimation();
+        });
+
+        function addEmoji(amount) {
+            emoji += amount;
+            updateDisplay();
+            saveGame(); // Save the game after every action
+            triggerJumpAnimation();
+        }
+
+        function updateDisplay() {
+            emojiDisplay.innerText = `Emoji Collected: ${emoji}`;
+        }
+
+        function triggerAnimation() {
+            emojiButton.classList.add('pulse');
+            setTimeout(() => {
+                emojiButton.classList.remove('pulse');
+            }, 500);
+        }
+
+        function triggerJumpAnimation() {
+            const emojiElement = document.createElement('div');
+            emojiElement.classList.add('emoji-jump');
+            emojiElement.innerText = skins[currentSkinIndex];
+            document.body.appendChild(emojiElement);
+
+            const plusOneElement = document.createElement('div');
+            plusOneElement.classList.add('plus-one');
+            plusOneElement.innerText = `+${emojiPerClick}`;
+            document.body.appendChild(plusOneElement);
+
+            setTimeout(() => {
+                emojiElement.remove();
+                plusOneElement.remove();
+            }, 1000);
+        }
+
+        // Initialize the game
+        loadGame();
+        autoSaveGame();
+    </script>
+</body>
+</html>
