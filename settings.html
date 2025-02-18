@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Clicker Settings</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-image: url('https://wallpaperaccess.com/full/2044405.jpg'); /* Cool background image */
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+        #main-content {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to the main content */
+            border-radius: 10px;
+        }
+        #skin-arrow {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none; /* Prevents text highlighting on click */
+            z-index: 1000;
+            font-size: 30px;
+            transition: transform 0.3s, left 0.3s;
+        }
+        #emoji-skins {
+            position: fixed;
+            left: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s;
+            z-index: 999;
+        }
+        .skin-option {
+            display: block;
+            margin: 10px 0;
+            font-size: 50px;
+            cursor: pointer;
+            user-select: none; /* Prevents text highlighting on click */
+        }
+        .locked {
+            color: gray;
+        }
+        .popup {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            animation: popupFade 0.5s forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes popupFade {
+            to {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+        }
+        #cheat-form {
+            margin-top: 20px;
+        }
+        #cheat-input {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+        #cheat-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            color: #000;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #cheat-button:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+        nav {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            margin: 5px;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 12px;
+        }
+        nav a:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <h1>Settings</h1>
+        <div id="skin-arrow">➡️</div>
+        <div id="emoji-skins">
+            <div class="skin-option locked" data-skin="🌈💩" data-unlock="1000">🌈💩</div>
+            <div class="skin-option locked" data-skin="⚫💩" data-unlock="10000">⚫💩</div>
+            <div class="skin-option locked" data-skin="⚪💩" data-unlock="100000">⚪💩</div>
+            <div class="skin-option locked" data-skin="🏅💩" data-unlock="1000000">🏅💩</div>
+            <div class="skin-option locked" data-skin="🐶" data-unlock="10000000">🐶</div>
+            <div class="skin-option locked" data-skin="🐱" data-unlock="100000000">🐱</div>
+            <div class="skin-option locked" data-skin="🐭" data-unlock="1000000000">🐭</div>
+            <div class="skin-option locked" data-skin="🐹" data-unlock="10000000000">🐹</div>
+            <div class="skin-option locked" data-skin="🐰" data-unlock="100000000000">🐰</div>
+        </div>
+        <div id="cheat-form">
+            <input type="text" id="cheat-input" placeholder="Enter cheat code" />
+            <button id="cheat-button">Activate Cheat</button>
+        </div>
+    </div>
+    <nav>
+        <a href="index.html">Clicking</a>
+        <a href="upgrades.html">Upgrades</a>
+        <a href="stats.html">Stats</a>
+        <a href="leaderboard.html">Leaderboard</a>
+    </nav>
+
+    <script>
+        let emoji = 0;
+        let currentSkinIndex = 0;
+        const skins = [
+            '🌈💩',
+            '⚫💩',
+            '⚪💩',
+            '🏅💩',
+            '🐶',
+            '🐱',
+            '🐭',
+            '🐹',
+            '🐰'
+        ];
+        const cheatCode = "dirtisalpha";
+        const newCheatCode = "infinityandbeyond";
+        const cheatAmount = 1000000000000000;
+        const skinArrow = document.getElementById('skin-arrow');
+        const emojiSkins = document.getElementById('emoji-skins');
+        const cheatInput = document.getElementById('cheat-input');
+        const cheatButton = document.getElementById('cheat-button');
+
+        // Load game data from local storage
+        function loadGame() {
+            const savedData = JSON.parse(localStorage.getItem('emojiClickerGame'));
+            if (savedData) {
+                emoji = savedData.emoji;
+                currentSkinIndex = savedData.currentSkinIndex || 0;
+                updateSkins();
+            }
+        }
+
+        // Save game data to local storage
+        function saveGame() {
+            const gameData = {
+                emoji: emoji,
+                currentSkinIndex: currentSkinIndex
+            };
+            localStorage.setItem('emojiClickerGame', JSON.stringify(gameData));
+        }
+
+        skinArrow.addEventListener('click', () => {
+            if (emojiSkins.style.left === '0px') {
+                emojiSkins.style.left = '-200px';
+                skinArrow.style.left = '10px';
+                skinArrow.style.transform = 'translateY(-50%)';
+            } else {
+                emojiSkins.style.left = '0px';
+                skinArrow.style.left = '210px';
+                skinArrow.style.transform = 'translateY(-50%) rotate(180deg)';
+            }
+        });
+
+        skins.forEach((skin, index) => {
+            const skinOption = document.createElement('div');
+            skinOption.classList.add('skin-option');
+            skinOption.innerText = skin;
+            skinOption.addEventListener('click', () => {
+                if (!skinOption.classList.contains('locked')) {
+                    currentSkinIndex = index;
+                    saveGame();
+                    emojiSkins.style.left = '-200px'; // Hide the skin selection GUI after selection
+                    skinArrow.style.left = '10px';
+                    skinArrow.style.transform = 'translateY(-50%)'; // Reset the arrow direction
+                }
+            });
+            emojiSkins.appendChild(skinOption);
+        });
+
+        function updateSkins() {
+            document.querySelectorAll('.skin-option.locked').forEach((element) => {
+                if (emoji >= parseInt(element.dataset.unlock)) {
+                    element.classList.remove('locked');
+                    element.innerText = element.dataset.skin;
+                }
+            });
+        }
+
+        // Cheat code activation
+        cheatButton.addEventListener('click', () => {
+            const enteredCode = cheatInput.value.trim().toLowerCase();
+            if (enteredCode === cheatCode) {
+                emoji += cheatAmount;
+                createPopup('Cheat Activated: Infinite Emoji', document.body);
+                cheatInput.value = ''; // Reset the input field
+            } else if (enteredCode === newCheatCode) {
+                emoji = Infinity;
+                createPopup('Cheat Activated: Infinite Emoji', document.body);
+                cheatInput.value = ''; // Reset the input field
+            } else {
+                createPopup('Invalid Cheat Code', document.body);
+                cheatInput.value = ''; // Reset the input field
+            }
+            saveGame();
+            updateSkins();
+        });
+
+        function createPopup(text, element) {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.innerText = text;
+            document.body.appendChild(popup);
+            const rect = element.getBoundingClientRect();
+            popup.style.left = `${rect.left + window.scrollX}px`;
+            popup.style.top = `${rect.top + window.scrollY}px`;
+            setTimeout(() => {
+                popup.remove();
+            }, 1000);
+        }
+
+        // Initialize the game
+        loadGame();
+    </script>
+</body>
+</html>
+``` ▋
