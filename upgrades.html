@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Clicker Upgrades</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-image: url('https://wallpaperaccess.com/full/2044405.jpg'); /* Cool background image */
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+        #main-content {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to the main content */
+            border-radius: 10px;
+        }
+        #upgrades {
+            margin-top: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px); /* Adjust the height as needed */
+        }
+        .upgrade {
+            margin: 10px;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none; /* Prevents text highlighting on click */
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 12px;
+        }
+        .upgrade:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+        nav {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            margin: 5px;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: 2px solid #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #000;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 12px;
+        }
+        nav a:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <h1>Upgrades</h1>
+        <div id="upgrades">
+            <div class="upgrade" id="upgrade1">Buy Shovel (Cost: 10 Emoji)</div>
+            <div class="upgrade" id="upgrade2">Buy Excavator (Cost: 50 Emoji)</div>
+            <div class="upgrade" id="upgrade3">Buy Bulldozer (Cost: 100 Emoji)</div>
+            <div class="upgrade" id="upgrade4">Buy Drill (Cost: 200 Emoji)</div>
+            <div class="upgrade" id="upgrade5">Buy Dump Truck (Cost: 500 Emoji)</div>
+            <div class="upgrade" id="upgrade6">Buy Wheel Loader (Cost: 1000 Emoji)</div>
+            <div class="upgrade" id="upgrade7">Buy Grader (Cost: 2000 Emoji)</div>
+            <div class="upgrade" id="upgrade8">Buy Compactor (Cost: 5000 Emoji)</div>
+            <div class="upgrade" id="upgrade9">Buy Crane (Cost: 10000 Emoji)</div>
+            <div class="upgrade" id="upgrade10">Buy Backhoe Loader (Cost: 20000 Emoji)</div>
+            <div class="upgrade" id="upgrade11">Buy Scraper (Cost: 50000 Emoji)</div>
+            <div class="upgrade" id="upgrade12">Buy Dragline (Cost: 100000 Emoji)</div>
+            <div class="upgrade" id="upgrade13">Buy Pile Driver (Cost: 200000 Emoji)</div>
+            <div class="upgrade" id="upgrade14">Buy Paving Machine (Cost: 500000 Emoji)</div>
+            <div class="upgrade" id="upgrade15">Buy Tunnel Boring Machine (Cost: 1000000 Emoji)</div>
+            <div class="upgrade" id="upgrade16">Buy Loader (Cost: 2000000 Emoji)</div>
+            <div class="upgrade" id="upgrade17">Buy Skid Steer Loader (Cost: 5000000 Emoji)</div>
+            <div class="upgrade" id="upgrade18">Buy Track Loader (Cost: 10000000 Emoji)</div>
+            <div class="upgrade" id="upgrade19">Buy Wheel Tractor-Scraper (Cost: 20000000 Emoji)</div>
+            <div class="upgrade" id="upgrade20">Buy Trencher (Cost: 50000000 Emoji)</div>
+            <div class="upgrade" id="upgrade21">Buy Road Roller (Cost: 100000000 Emoji)</div>
+            <div class="upgrade" id="upgrade22">Buy Asphalt Paver (Cost: 200000000 Emoji)</div>
+            <div class="upgrade" id="upgrade23">Buy Cold Planer (Cost: 500000000 Emoji)</div>
+            <div class="upgrade" id="upgrade24">Buy Motor Grader (Cost: 1000000000 Emoji)</div>
+            <div class="upgrade" id="upgrade25">Buy Snowplow (Cost: 2000000000 Emoji)</div>
+            <div class="upgrade" id="upgrade26">Buy Bucket Wheel Excavator (Cost: 5000000000 Emoji)</div>
+            <div class="upgrade" id="upgrade27">Buy Surface Miner (Cost: 10000000000 Emoji)</div>
+        </div>
+    </div>
+    <nav>
+        <a href="index.html">Clicking</a>
+        <a href="stats.html">Stats</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="settings.html">Settings</a>
+    </nav>
+
+    <script>
+        let emoji = 0;
+        let emojiPerClick = 1;
+        const upgradeCosts = [10, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000, 200000000, 500000000, 1000000000, 2000000000, 5000000000, 10000000000];
+        const upgradeIncreases = [1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650];
+
+        // Load game data from local storage
+        function loadGame() {
+            const savedData = JSON.parse(localStorage.getItem('emojiClickerGame'));
+            if (savedData) {
+                emoji = savedData.emoji;
+                emojiPerClick = savedData.emojiPerClick;
+                updateDisplay();
+            }
+        }
+
+        // Save game data to local storage
+        function saveGame() {
+            const gameData = {
+                emoji: emoji,
+                emojiPerClick: emojiPerClick
+            };
+            localStorage.setItem('emojiClickerGame', JSON.stringify(gameData));
+        }
+
+        for (let i = 1; i <= 27; i++) {
+            document.getElementById(`upgrade${i}`).addEventListener('click', () => buyUpgrade(i));
+        }
+
+        function buyUpgrade(upgradeNumber) {
+            const cost = upgradeCosts[upgradeNumber - 1];
+            const increase = upgradeIncreases[upgradeNumber - 1];
+            if (emoji >= cost) {
+                emoji -= cost;
+                emojiPerClick += increase;
+                upgradeCosts[upgradeNumber - 1] *= 2;
+                updateDisplay();
+                document.getElementById(`upgrade${upgradeNumber}`).innerText = document.getElementById(`upgrade${upgradeNumber}`).innerText.replace(/\(Cost: \d+ Emoji\)/, `(Cost: ${upgradeCosts[upgradeNumber - 1]} Emoji)`);
+                saveGame(); // Save the game after every action
+            }
+        }
+
+        function updateDisplay() {
+            const emojiDisplay = document.getElementById('score');
+            if (emojiDisplay) {
+                emojiDisplay.innerText = `Emoji Collected: ${emoji}`;
+            }
+        }
+
+        // Initialize the game
+        loadGame();
+    </script>
+</body>
+</html>
